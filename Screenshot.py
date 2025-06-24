@@ -6,8 +6,8 @@ import sys
 import tkinter as tk 
 import pyperclip
 import API # <<< THAY ĐỔI: Import cả module API
+from Mainternance import MaintenanceWindow, CustomAlert
 
-# --- Biến toàn cục để lưu trữ ảnh và quản lý tên tệp ---
 captured_images = []
 image_counter = 0
 
