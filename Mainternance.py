@@ -86,7 +86,7 @@ class MaintenanceWindow(QWidget):
         comment_label = QLabel("✍️ Gửi feedback (Ẩn danh):")
         comment_label.setStyleSheet("color: #333; font-weight: bold;font-size: 15px;")
         self.comment_box = QTextEdit()
-        self.comment_box.setPlaceholderText("Viết gì đó cho Hùng...")
+        self.comment_box.setPlaceholderText("Viết gì đó cho Hùng ( Lỡ bị lỗi thì chờ 3s - 4s rùi gửi lại nhé <3)")
         self.comment_box.setStyleSheet("border: 1px solid #ccc; border-radius: 6px; padding: 5px;")
         self.comment_box.setFixedHeight(60)
 
@@ -155,7 +155,7 @@ class MaintenanceWindow(QWidget):
         except Exception as e:
             QMessageBox.critical(self, "Lỗi mạng", f"Không thể kết nối:\n{e}")
 
-if __name__ == "__main__":
+def window_maintenance():
     app = QApplication([])
     window = MaintenanceWindow()
     window.show()

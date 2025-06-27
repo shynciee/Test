@@ -7,7 +7,8 @@ import tkinter as tk
 import pyperclip
 import API # <<< THAY ĐỔI: Import cả module API
 from Mainternance import MaintenanceWindow, CustomAlert
-
+from Mainternance import window_maintenance
+import requests
 captured_images = []
 image_counter = 0
 
@@ -136,4 +137,16 @@ def Screen_Main():
     keyboard.wait()
 
 if __name__ == "__main__":
-    Screen_Main()
+    try:
+        response = requests.get("https://demo-backend-byp9.onrender.com/view_status", timeout=15)
+        data = response.json()
+        status = data.get("status")
+
+        if status == "maintain":
+            Screen_Main()
+        elif status == "maintenance":
+            window_maintenance()
+        else:
+            print("⚠️ Lỗi không xác định trạng thái.")
+    except Exception as e:
+        print(f"❌ Không kết nối được tới server: {e}")

@@ -57,7 +57,7 @@ def API_Main(image_paths):
             return
 
         print(f"Đang gửi {len(image_paths)} ảnh đến AI... Vui lòng chờ.")
-        model = A.GenerativeModel('gemini-2.5-flash')
+        model = A.GenerativeModel('gemini-2.5-pro')
         start_time = time.time()
         response = model.generate_content(content_for_api)
         end_time = time.time()
