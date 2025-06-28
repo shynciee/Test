@@ -11,16 +11,35 @@ from Mainternance import window_maintenance
 import requests
 captured_images = []
 image_counter = 0
+from dotenv import load_dotenv, dotenv_values
+import pkgutil
+import traceback
+import time
 
-# <<< THÊM MỚI: Hàm để lấy đường dẫn chính xác khi chạy file .exe >>>
 def get_base_path():
-    """Lấy đường dẫn cơ sở, hoạt động cho cả môi trường dev và PyInstaller."""
     if getattr(sys, 'frozen', False):
-        # Nếu đang chạy dưới dạng file .exe đã đóng gói
-        return os.path.dirname(sys.executable)
+        return os.path.dirname(sys.executable) 
     else:
-        # Nếu đang chạy file .py thông thường
         return os.path.dirname(os.path.abspath(__file__))
+
+env_path = os.path.join(get_base_path(), ".env")
+def load_embedded_env():
+    if getattr(sys, 'frozen', False):
+        try:
+            env_path = os.path.join(sys._MEIPASS, ".env")
+            if os.path.exists(env_path):
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.strip() and not line.startswith("#"):
+                            key, value = line.strip().split("=", 1)
+                            os.environ[key] = value
+        except Exception as e:
+            print(f"⚠️ Không thể đọc .env từ exe: {e}")
+    else:
+        load_dotenv()
+
+
+load_embedded_env()
 
 class RegionSelector:
     """Lớp giao diện đồ họa để chọn vùng màn hình (Không thay đổi)."""
@@ -108,11 +127,18 @@ def process_and_send_to_api():
     print(f"\n[{time.strftime('%H:%M:%S')}] Đã nhấn 'Ctrl+G'. Đang tổng hợp {len(captured_images)} ảnh và gửi đến AI...")
 
     try:
-        # <<< THAY ĐỔI: Gọi hàm API_Main thông qua module đã import >>>
         API.API_Main(captured_images)
     except Exception as e:
         print(f"\n!!! Lỗi khi gửi đến AI: {e}")
     finally:
+        try:
+            print("-> Tác vụ hoàn tất, di chuyển con trỏ chuột về giữa màn hình.")
+            screenWidth, screenHeight = pyautogui.size() # Lấy kích thước màn hình
+            centerX, centerY = screenWidth / 2, screenHeight / 2 # Tính tọa độ trung tâm
+            pyautogui.moveTo(centerX, centerY, duration=0.25) # Di chuyển chuột tới trung tâm
+        except Exception as e_move:
+            print(f"!!! Lỗi khi di chuyển chuột: {e_move}")
+        
         print(f"\n[{time.strftime('%H:%M:%S')}] Hoàn tất! Đang chờ lệnh tiếp theo ('Ctrl+B' hoặc 'Ctrl+C').")
         captured_images = []
         image_counter = 0
@@ -149,4 +175,5 @@ if __name__ == "__main__":
         else:
             print("⚠️ Lỗi không xác định trạng thái.")
     except Exception as e:
+        traceback.print_exc()
         print(f"❌ Không kết nối được tới server: {e}")

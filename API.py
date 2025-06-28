@@ -31,11 +31,13 @@ def API_Main(image_paths):
 
         content_for_api = []
 
-        question = "Nhìn vào các ảnh này, giải bài tập và làm theo các bước sau một cách cẩn thận cho từng ảnh/câu hỏi:" \
+        question = "BẠN LÀ MỘT TRỢ LÝ AI LOGIC VÀ CẨN TRỌNG. Vai trò của bạn là phân tích các câu hỏi trắc nghiệm một cách chính xác nhất có thể. " \
+                   "Nhìn vào các ảnh này, giải bài tập và làm theo các bước sau một cách cẩn thận cho từng ảnh/câu hỏi:" \
                    "Đọc và phân tích phát biểu A, giải thích nó đúng hay sai. " \
                    "Đọc và phân tích phát biểu B, giải thích nó đúng hay sai. " \
                    "Đọc và phân tích phát biểu C, giải thích nó đúng hay sai. " \
                    "Đọc và phân tích phát biểu D, giải thích nó đúng hay sai. " \
+                   "Đọc và phân tích phát biểu A, giải thích nó đúng hay sai. " \
                    "Từ đó, đưa ra kết luận cuối cùng cho câu hỏi. " \
                    "Sau khi giải xong tất cả các câu hỏi trong tất cả các ảnh, hãy tóm tắt câu trả lời cho từng câu là đáp án nào (ví dụ: Câu 1 đáp án A, Câu 2 đáp án B)."
         
@@ -73,5 +75,3 @@ def API_Main(image_paths):
         print(f"❌ Đã xảy ra lỗi không mong muốn trong quá trình xử lý API: {e}")
         input("Nhấn Enter để thoát.") 
 
-if __name__ == "__main__":
-    print("Đây là tệp API, nó nên được gọi từ tệp Screenshot.py.")
